@@ -1,0 +1,417 @@
+/* ============================================================
+   Expense & Budget Visualizer — style.css
+   Validates: Requirements 7.4, 8.1, 8.2, 8.3, 8.4
+   ============================================================ */
+
+/* ── Custom properties ─────────────────────────────────────── */
+:root {
+  /* Color palette — all text/bg combos meet WCAG AA 4.5:1 */
+  --color-bg:          #f5f7fa;   /* page background */
+  --color-surface:     #ffffff;   /* card / section background */
+  --color-border:      #d1d5db;   /* input borders */
+  --color-text:        #1a1a2e;   /* primary text — contrast on white: ~16:1 */
+  --color-text-muted:  #4b5563;   /* secondary text — contrast on white: ~7:1 */
+  --color-accent:      #2563eb;   /* interactive blue — contrast on white: ~5.9:1 */
+  --color-accent-dark: #1d4ed8;   /* hover/focus blue */
+  --color-error:       #b91c1c;   /* error red — contrast on white: ~7.1:1 */
+  --color-delete:      #dc2626;   /* delete button red */
+  --color-delete-dark: #b91c1c;   /* delete hover */
+  --color-header-bg:   #1a1a2e;   /* header background */
+  --color-header-text: #f5f7fa;   /* header text — contrast on header-bg: ~14:1 */
+
+  /* Spacing */
+  --space-xs:  0.25rem;
+  --space-sm:  0.5rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2rem;
+
+  /* Typography */
+  --font-base: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-sm:   0.875rem;   /* 14px */
+  --font-size-lg:   1.125rem;   /* 18px */
+  --font-size-xl:   1.5rem;     /* 24px */
+
+  /* Borders */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  /* Transitions */
+  --transition-fast: 80ms ease;
+}
+
+/* ── Reset / base ───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Prevent horizontal scroll at any viewport width */
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-base);
+  font-size: var(--font-size-base); /* minimum 16px — Req 8.2 */
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  min-width: 320px; /* support down to 320px — Req 8.3 */
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+header {
+  background-color: var(--color-header-bg);
+  color: var(--color-header-text);
+  padding: var(--space-md) var(--space-xl);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+header h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Balance display — always visible at top — Req 8.1, 4.1 */
+#balance-display {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.12);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* ── Main content area: form + chart side-by-side — Req 8.1 ── */
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-xl);
+  max-width: 1920px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* ── Form section ───────────────────────────────────────────── */
+#form-section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+#expense-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.form-group label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Shared styles for text input, number input, and select */
+#expense-form input[type="text"],
+#expense-form input[type="number"],
+#expense-form select {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Hover state — Req 8.4 */
+#expense-form input[type="text"]:hover,
+#expense-form input[type="number"]:hover,
+#expense-form select:hover {
+  border-color: var(--color-accent);
+}
+
+/* Focus indicator — Req 8.4 */
+#expense-form input[type="text"]:focus,
+#expense-form input[type="number"]:focus,
+#expense-form select:focus {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+/* Re-add dropdown arrow removed by appearance:none */
+#expense-form select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234b5563' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+/* Submit button */
+#expense-form button[type="submit"] {
+  align-self: flex-start;
+  padding: var(--space-sm) var(--space-xl);
+  font-family: var(--font-base);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--color-accent);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+/* Hover state — Req 8.4 */
+#expense-form button[type="submit"]:hover {
+  background-color: var(--color-accent-dark);
+}
+
+/* Focus indicator — Req 8.4 */
+#expense-form button[type="submit"]:focus {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+}
+
+#expense-form button[type="submit"]:active {
+  background-color: var(--color-accent-dark);
+  transform: translateY(1px);
+}
+
+/* Inline error messages — Req 8.1, 1.4 */
+.error-msg {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-error); /* red, contrast on white ~7.1:1 — Req 8.2 */
+  min-height: 1.2em; /* reserve space to avoid layout shift */
+}
+
+/* ── Chart section ──────────────────────────────────────────── */
+#chart-section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+#pie-chart {
+  max-width: 100%;
+  height: auto;
+}
+
+#chart-placeholder,
+#chart-error {
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* ── Transaction list section — Req 8.1, 2.3 ───────────────── */
+#list-section {
+  padding: 0 var(--space-xl) var(--space-xl);
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+#transaction-list {
+  list-style: none;
+  max-height: 400px;
+  overflow-y: auto;       /* scrollable when content overflows — Req 2.3 */
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+}
+
+/* Scrollbar styling (Webkit) */
+#transaction-list::-webkit-scrollbar {
+  width: 6px;
+}
+#transaction-list::-webkit-scrollbar-track {
+  background: var(--color-bg);
+  border-radius: 3px;
+}
+#transaction-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+#transaction-list::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Individual transaction list items */
+#transaction-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-base);
+  flex-wrap: wrap;
+}
+
+#transaction-list li:last-child {
+  border-bottom: none;
+}
+
+#transaction-list li:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+/* Transaction item content area */
+.transaction-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex: 1;
+  min-width: 0; /* allow text truncation */
+  flex-wrap: wrap;
+}
+
+.transaction-name {
+  font-weight: 600;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.transaction-amount {
+  font-weight: 700;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.transaction-category {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 2px var(--space-sm);
+  white-space: nowrap;
+}
+
+/* Delete button — Req 3.1, 8.4 */
+.delete-btn {
+  flex-shrink: 0;
+  padding: var(--space-xs) var(--space-sm);
+  font-family: var(--font-base);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--color-delete);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+  white-space: nowrap;
+}
+
+/* Hover state — Req 8.4 */
+.delete-btn:hover {
+  background-color: var(--color-delete-dark);
+}
+
+/* Focus indicator — Req 8.4 */
+.delete-btn:focus {
+  outline: 3px solid var(--color-delete);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.2);
+}
+
+.delete-btn:active {
+  transform: translateY(1px);
+}
+
+/* Placeholder text */
+#list-placeholder {
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+/* ── Responsive layout — Req 8.3 ────────────────────────────── */
+/* Collapse to single column on narrow viewports (≤600px) */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-md);
+  }
+
+  main {
+    grid-template-columns: 1fr; /* single column */
+    padding: var(--space-md);
+    gap: var(--space-md);
+  }
+
+  #list-section {
+    padding: 0 var(--space-md) var(--space-md);
+  }
+
+  #expense-form button[type="submit"] {
+    align-self: stretch; /* full-width button on small screens */
+  }
+
+  .transaction-name {
+    max-width: 120px;
+  }
+}
+
+/* Mid-range: keep side-by-side but tighten spacing */
+@media (min-width: 601px) and (max-width: 900px) {
+  main {
+    padding: var(--space-md) var(--space-lg);
+    gap: var(--space-md);
+  }
+
+  #list-section {
+    padding: 0 var(--space-lg) var(--space-lg);
+  }
+}
+
+/* Wide screens: cap content width and center */
+@media (min-width: 1200px) {
+  main,
+  #list-section {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
